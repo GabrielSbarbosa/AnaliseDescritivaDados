@@ -71,9 +71,13 @@ O projeto seguiu as seguintes etapas.
 import pandas as pd
 import numpy as np
 import seaborn as sns
-2️⃣ Carregamento do dataset
-dados = pd.read_csv('/content/sample_data/dados.csv')
+```
 
+2️⃣ Carregamento do dataset
+
+```python
+dados = pd.read_csv('/content/sample_data/dados.csv')
+```
 Os dados foram carregados utilizando Pandas e armazenados em um DataFrame.
 
 3️⃣ Construção de classes de renda
@@ -88,6 +92,8 @@ B	15 a 25 salários mínimos
 C	5 a 15 salários mínimos
 D	2 a 5 salários mínimos
 E	Até 2 salários mínimos
+
+```python
 classes = [
     dados.Renda.min(),
     2 * 788,
@@ -96,10 +102,13 @@ classes = [
     25 * 788,
     dados.Renda.max()
 ]
+
+```
 4️⃣ Tabela de frequência da renda
 
 Foi construída uma tabela de frequência utilizando pd.cut() e value_counts().
 
+```python
 frequencia = pd.value_counts(
     pd.cut(
         x=dados.Renda,
@@ -108,9 +117,9 @@ frequencia = pd.value_counts(
         include_lowest=True
     )
 )
-
+```
 Também foi calculado o percentual de cada classe.
-
+```python
 percentual = pd.value_counts(
     pd.cut(
         x=dados.Renda,
@@ -120,13 +129,19 @@ percentual = pd.value_counts(
     ),
     normalize=True
 ) * 100
+
+```
 5️⃣ Gráfico de barras da distribuição de renda
+
+```python
 dist_freq_quantitativas_personalizadas['Frequência'].plot.bar(
     width=1,
     color='blue',
     alpha=0.2,
     figsize=(12,6)
 )
+
+```
 6️⃣ Histogramas das variáveis
 
 Foram criados histogramas para:
@@ -138,26 +153,27 @@ Altura
 Renda
 
 Exemplo:
-
+```python
 sns.distplot(dados['Idade'])
-
+```
 Esses gráficos permitem identificar distribuição, concentração de valores e possíveis outliers.
 
 7️⃣ Histograma de renda filtrado
 
 Para melhorar a visualização da renda, foi criado um histograma considerando apenas valores abaixo de R$ 20.000.
-
+```python
 sns.histplot(dados.query('Renda < 20000').Renda)
 8️⃣ Tabela cruzada entre Sexo e Cor
 frequencia = pd.crosstab(dados.Sexo, dados.Cor)
-
+```
 Tabela percentual:
-
+```python
 percentual = pd.crosstab(
     dados.Sexo,
     dados.Cor,
     normalize=True
 ) * 100
+```
 9️⃣ Estatísticas descritivas da renda
 Métrica	Valor
 Média	R$ 2000
@@ -167,12 +183,14 @@ Desvio padrão	R$ 3323
 A média maior que a mediana indica assimetria positiva na distribuição da renda.
 
 🔟 Estatísticas de renda por sexo e cor
+```python
 pd.crosstab(
     dados.Cor,
     dados.Sexo,
     values=dados.Renda,
     aggfunc={'mean','median','max'}
 )
+```
 1️⃣1️⃣ Medidas de dispersão
 
 Foram analisadas:
@@ -186,24 +204,29 @@ desvio padrão
 Essas métricas mostram o nível de desigualdade na distribuição da renda.
 
 1️⃣2️⃣ Boxplot de renda
+```python
 sns.boxplot(
     x='Renda',
     y='Cor',
     hue='Sexo',
     data=dados.query('Renda < 10000')
 )
+```
 1️⃣3️⃣ Percentual de pessoas que ganham até 1 salário mínimo
+```python
 from scipy import stats
 
 stats.percentileofscore(dados.Renda, 788, kind='weak')
+```
 
 Resultado:
 
 28.87% da população ganha até um salário mínimo.
 
 1️⃣4️⃣ Valor máximo recebido por 99% da população
+```python
 dados.Renda.quantile(.99)
-
+```
 Resultado:
 
 R$ 15.000
